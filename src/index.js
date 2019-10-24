@@ -1,6 +1,20 @@
 import React from "react";
 import ReactDOM from "react-dom";
 
+import {
+  AppBar,
+  Container,
+  CssBaseline,
+  FormControl,
+  Input,
+  InputLabel,
+  List,
+  ListItem,
+  ListItemText,
+  Toolbar,
+  Typography
+} from "@material-ui/core";
+
 class ToDoItem extends React.Component {
   render() {
     return <li>{this.props.todo}</li>;
@@ -22,11 +36,15 @@ class ToDoListEmpty extends React.Component {
 class TodoList extends React.Component {
   render() {
     return (
-      <ul>
-        {this.props.todos.map(todo => {
-          return <ToDoItem todo={todo} />;
+      <List>
+        {this.props.todos.map((todo, index) => {
+          return (
+            <ListItem key={index} disableGutters>
+              <ListItemText primary={todo} />
+            </ListItem>
+          );
         })}
-      </ul>
+      </List>
     );
   }
 }
@@ -68,14 +86,15 @@ class ToDoAdd extends React.Component {
   render() {
     return (
       <form onSubmit={this.handleSubmit}>
-        <label htmlFor="add">Add a todo:</label>{" "}
-        <input
-          type="text"
-          name="add"
-          id="add"
-          value={this.state.value}
-          onChange={this.handleChange}
-        />
+        <FormControl fullWidth>
+          <InputLabel htmlFor="add">Add a todo</InputLabel>
+          <Input
+            id="add"
+            type="text"
+            value={this.state.value}
+            onChange={this.handleChange}
+          />
+        </FormControl>
       </form>
     );
   }
@@ -85,7 +104,14 @@ class ToDoThis extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      todos: []
+      todos: [
+        "A single todo item",
+        "A second todo item",
+        "This needs to be done",
+        "Think about this here",
+        "When will you do this thing?",
+        "Here is another thing"
+      ]
     };
 
     this.handleNewTodo = this.handleNewTodo.bind(this);
@@ -99,10 +125,21 @@ class ToDoThis extends React.Component {
 
   render() {
     return (
-      <div className="todothis">
-        <h1>ToDoThis</h1>
-        <ToDoAdd handleSubmit={this.handleNewTodo} />
-        <ToDoHome todos={this.state.todos} />
+      <div>
+        <CssBaseline />
+        <AppBar color="primary" position="static">
+          <Toolbar>
+            <Typography variant="h6">ToDoThis</Typography>
+          </Toolbar>
+        </AppBar>
+
+        <Container
+          maxWidth="sm"
+          style={{ backgroundColor: "white", marginTop: "1em", padding: "1em" }}
+        >
+          <ToDoAdd handleSubmit={this.handleNewTodo} />
+          <ToDoHome todos={this.state.todos} />
+        </Container>
       </div>
     );
   }
